@@ -4,6 +4,9 @@ resource "aws_security_group" "outbound" {
   vpc_id                  = "${data.terraform_remote_state.vpc.vpc_id}"
   revoke_rules_on_delete  = true
 
+  # ref: https://www.terraform.io/docs/configuration/interpolation.html#merge-map1-map2-
+  tags = "${merge(map("Name","${data.terraform_remote_state.vpc.vpc_name}_sg_outbound"), var.tags)}"
+
   egress {
     from_port   = "0"
     to_port     = "0"
@@ -12,6 +15,5 @@ resource "aws_security_group" "outbound" {
     self        = true
   }
 
-  tags = "${var.tags}"
   
 }

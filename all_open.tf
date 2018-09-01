@@ -18,6 +18,7 @@ resource "aws_security_group" "all_open" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = "${var.tags}"
+  # ref: https://www.terraform.io/docs/configuration/interpolation.html#merge-map1-map2-
+  tags = "${merge(map("Name","${data.terraform_remote_state.vpc.vpc_name}_sg_all_open"), var.tags)}"
   
 }

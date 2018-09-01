@@ -8,6 +8,8 @@ resource "aws_security_group" "internal_servers" {
   vpc_id                  = "${data.terraform_remote_state.vpc.vpc_id}"
   revoke_rules_on_delete  = true
 
-  tags = "${var.tags}"
+    # ref: https://www.terraform.io/docs/configuration/interpolation.html#merge-map1-map2-
+  tags = "${merge(map("Name","${data.terraform_remote_state.vpc.vpc_name}_sg_internal_servers"), var.tags)}"
+  
   
 }

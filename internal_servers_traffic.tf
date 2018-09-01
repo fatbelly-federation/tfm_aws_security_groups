@@ -7,6 +7,9 @@ resource "aws_security_group" "allow_internal_servers" {
   vpc_id                  = "${data.terraform_remote_state.vpc.vpc_id}"
   revoke_rules_on_delete  = true
 
+  # ref: https://www.terraform.io/docs/configuration/interpolation.html#merge-map1-map2-
+  tags = "${merge(map("Name","${data.terraform_remote_state.vpc.vpc_name}_sg_allow_internal_servers"), var.tags)}"
+  
   ingress {
     description = "Allow all"
     from_port   = "0"
@@ -38,7 +41,6 @@ resource "aws_security_group" "allow_internal_servers" {
     security_groups = [ "${aws_security_group.internal_servers.id}"]
   }
 
-  tags = "${var.tags}"
   
 }
 
